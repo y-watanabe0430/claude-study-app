@@ -40,17 +40,21 @@ describe.skipIf(!present)('非公開パック (472問)', () => {
     expect(new Set(all.v.pack!.questions.map((q) => q.id)).size).toBe(472);
   });
 
-  it('出典内訳・翻訳状態・隔離が報告と一致する', () => {
+  it('出典内訳・翻訳状態・隔離なし・訂正の記録が報告と一致する', () => {
     const qs = load('ALL').v.pack!.questions;
     expect(qs.filter((q) => q.source.sourceId === 'matthew')).toHaveLength(236);
     expect(qs.filter((q) => q.source.sourceId === 'minorun')).toHaveLength(236);
     expect(qs.filter((q) => q.translationStatus === 'translated_ja')).toHaveLength(236);
     expect(qs.filter((q) => q.translationStatus === 'original_ja')).toHaveLength(236);
     expect(qs.filter((q) => q.translationStatus === 'pending')).toHaveLength(0);
-    // Matthew版 CCDV-F 5.9 は、解答欄の不整合により隔離されている
-    expect(qs.filter((q) => q.status === 'needs_review').map((q) => q.id)).toEqual(['CCDV-F:matthew:MP-5.9']);
+    // Matthew版 CCDV-F 5.9 は、原本の解答欄(A,D)が原本自身の他の記述と矛盾していたため、根拠つきで C に訂正済み (revision 2)
+    expect(qs.filter((q) => q.status === 'needs_review')).toEqual([]);
     const q59 = qs.find((q) => q.id === 'CCDV-F:matthew:MP-5.9')!;
-    expect(q59.reviewNotes!.join('')).toContain('不整合');
+    expect(q59.revision).toBe(2);
+    expect(q59.type).toBe('single');
+    expect(q59.correctAnswer.choiceIds).toEqual(['c']);
+    expect((q59.supplemental as { originalAnswerKey?: string }).originalAnswerKey).toBe('A, D');
+    expect(q59.reviewNotes!.join('')).toContain('正解を訂正');
     expect(q59.originalText).toBeTruthy();
   });
 
@@ -116,7 +120,7 @@ describe.skipIf(!present)('非公開パック (472問)', () => {
     }
   });
 
-  it('アプリへ取り込める。再取り込みで増殖せず、資格別→全資格の順でも重複しない。5.9 は出題されない', async () => {
+  it('アプリへ取り込める。再取り込みで増殖せず、資格別→全資格の順でも重複しない。5.9 を含む全問が出題対象になる', async () => {
     const db = await fresh();
     for (const e of EXAMS) {
       const { z, v } = load(e);
@@ -133,11 +137,11 @@ describe.skipIf(!present)('非公開パック (472問)', () => {
     expect(latest).toHaveLength(472);
 
     const s = createSession(latest, { exam: 'mixed', mode: 'mock', shuffleChoices: true, shuffleQuestions: false, limitMinutes: 60, count: 1000 });
-    expect(s.questionRefs).toHaveLength(471);
-    expect(s.questionRefs.map((r) => r.id)).not.toContain('CCDV-F:matthew:MP-5.9');
+    expect(s.questionRefs).toHaveLength(472);
+    expect(s.questionRefs.map((r) => r.id)).toContain('CCDV-F:matthew:MP-5.9');
     for (const e of EXAMS) {
       const sx = createSession(latest.filter((q) => q.exam === e), { exam: e, mode: 'practice', shuffleChoices: false, shuffleQuestions: false, limitMinutes: null, count: 1000 });
-      expect(sx.questionRefs.length).toBe(EXPECTED[e] - (e === 'CCDV-F' ? 1 : 0));
+      expect(sx.questionRefs.length).toBe(EXPECTED[e]);
     }
     // 図が取り込まれ、問題から引ける
     const withFig = latest.filter((q) => q.assets?.length);

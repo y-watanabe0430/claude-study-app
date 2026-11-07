@@ -15,7 +15,8 @@
     "serve:subpath": "node scripts/serve-subpath.mjs dist",
     "extract:sources": "node scripts/extract-sources.mjs",
     "check:translations": "node scripts/check-translations.mjs CCDV-F && node scripts/check-translations.mjs CCAO-F && node scripts/check-translations.mjs CCAR-P && node scripts/check-translations.mjs CCAR-F",
-    "build:packs": "node scripts/build-packs.mjs && node scripts/write-report.mjs"
+    "build:packs": "node scripts/build-packs.mjs && node scripts/write-report.mjs",
+    "review:letters": "node scripts/check-letters.mjs"
   },
   "dependencies": {
     "fflate": "^0.8.3",

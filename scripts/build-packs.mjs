@@ -12,6 +12,8 @@ mkdirSync('translations', { recursive: true });
 
 const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 const domains = readJson('translations/ja/domains.json');
+// 正解の訂正(根拠つき)。原本の解答欄が原本自身の他の記述と矛盾する問題だけに適用する
+const overrides = existsSync('translations/answer-overrides.json') ? readJson('translations/answer-overrides.json') : {};
 const hasJa = (s) => /[぀-ヿ一-鿿]/.test(s ?? '');
 
 function loadTranslations(exam) {
@@ -106,7 +108,7 @@ for (const exam of EXAMS) {
     R.translationStatus[translationStatus] = (R.translationStatus[translationStatus] ?? 0) + 1;
 
     const q = {
-      id: qid, revision: 1, exam, type: 'single', domainJa, status: 'ready', translationStatus,
+      id: qid, revision: overrides[qid]?.revision ?? 1, exam, type: 'single', domainJa, status: 'ready', translationStatus,
       ja: { stem: ja.s, explanation: ja.e },
       source: { sourceId: rec.source, originalId: rec.id, originalNumber: rec.originalNumber, url: rec.url || undefined, savedAt: rec.savedAt || undefined, sheetRow: rec.sheetRow, pdfPages: rec.source === 'matthew' ? rec.pdfPages : undefined },
       correctAnswer: {}, assets: [], reviewNotes: notes, duplicateGroupId: null,
@@ -152,7 +154,8 @@ for (const exam of EXAMS) {
         id: c.label.toLowerCase(), textJa: ja.c[i] ?? c.text,
         originalLabel: rec.source === 'minorun' && Array.isArray(order) && order.length === letters.length ? 'ABCDE'[order[i]] : c.label,
       }));
-      const correct = rec.answerRaw.split(/[,、\s]+/).filter(Boolean);
+      const ovr = overrides[qid];
+      const correct = ovr ? ovr.choiceIds.map((c) => c.toUpperCase()) : rec.answerRaw.split(/[,、\s]+/).filter(Boolean);
       q.correctAnswer = { choiceIds: correct.map((l) => l.toLowerCase()) };
       const req = Number(rec.required);
       const multi = /Multiple response/i.test(rec.format) || req > 1;
@@ -194,14 +197,16 @@ for (const exam of EXAMS) {
       if (r.asset) { q.assets.push(r.asset); R.figuresLinkedToQuestions++; } else reasons.push(r.missing);
     }
 
-    if (rec.note) notes.push(rec.note);
-    if (rec.id === 'MP-5.9' && exam === 'CCDV-F') {
-      notes.push('解説本文は選択肢C（fast mode）の内容を説明しており、解答欄の「A,D」と一致しない。原文の解答欄・解説を保存したまま、正解は確定していない。');
-    }
-    if (reasons.length || rec.note) {
+    const ov = overrides[qid];
+    if (ov) {
+      notes.push(`正解を訂正 (revision ${ov.revision}, ${ov.decidedAt})。原本の解答欄: 「${ov.originalAnswerKey}」。${ov.reason}`);
+      (q.supplemental ??= {}).originalAnswerKey = ov.originalAnswerKey;
+      (R.overrides ??= []).push({ id: qid, revision: ov.revision, originalAnswerKey: ov.originalAnswerKey, corrected: ov.choiceIds });
+    } else if (rec.note) notes.push(rec.note);
+    if (reasons.length || (rec.note && !ov)) {
       q.status = 'needs_review';
       for (const r of reasons) if (!notes.includes(r)) notes.push(r);
-      R.quarantine.push({ id: qid, reasons: [...(rec.note ? [rec.note] : []), ...reasons] });
+      R.quarantine.push({ id: qid, reasons: [...(rec.note && !ov ? [rec.note] : []), ...reasons] });
     }
     if (q.status === 'ready') R.ready++; else R.needsReview++;
     if (!q.assets.length) delete q.assets;
