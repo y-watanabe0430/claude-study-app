@@ -2,8 +2,8 @@
 
 CCDV-F / CCAO-F / CCAR-P / CCAR-F の日本語問題を解き、解説・誤答復習・履歴・メモを端末内に残す静的Webアプリです。サーバー・有料DB・外部AI APIは使いません。
 
-- 状態: アプリ本体は実装・検証済み。**実教材(472問)は未取り込み**(元Excelが未添付。[docs/INPUT_AUDIT.md](docs/INPUT_AUDIT.md))。
-- 同梱データは動作確認用のオリジナル4問 (`public/sample-pack.ja.json`) のみ。第三者教材は含みません。
+- 状態: アプリ本体は実装・検証済み。元教材472問の変換・日本語化も完了し、ローカルの非公開パックを作成済み([docs/IMPORT_REPORT.md](docs/IMPORT_REPORT.md)、[docs/INPUT_AUDIT.md](docs/INPUT_AUDIT.md))。
+- **公開リポジトリと公開サイトに入るのはアプリ本体とオリジナルのサンプル4問 (`public/sample-pack.ja.json`) だけです。** 元教材(`inputs_private/`)・翻訳(`translations/`)・変換後の問題パック(`dist-private/`)は `.gitignore` 済みで、公開ビルドにも入りません(`npm run verify:dist` が検査)。
 
 ## 起動と検証
 
@@ -18,6 +18,23 @@ npm run serve:subpath   # dist を /claude-study-app/ で配信 (別ターミナ
 npm run smoke:pwa        # 上記に対し Chrome/Edge でオフライン動作・外部通信なしを検査 (任意)
 npm run inventory    # inputs_private/ の元教材を棚卸し → docs/INPUT_AUDIT.md
 ```
+
+## 教材パックの作成 (手元だけで行う。出力は Git 管理外)
+
+元教材を `inputs_private/archives/` (Question Archive の Excel 4冊) と `inputs_private/diagrams/` (Diagrams_JA の Excel 4冊と `images/`) に置く。
+
+```bash
+npm run inventory         # 受領ファイルと実件数を確認
+npm run extract:sources   # 英語(Matthew版)の翻訳元を translations/src/ に抽出
+# 翻訳を translations/ja/<資格>/NN.json に作成 (問題・全選択肢・正解の理由・誤答の解説・シナリオ)
+npm run check:translations
+npm run build:packs       # dist-private/ に資格別と全資格の問題パック(ZIP/JSON)と変換報告を出力
+npm test                  # dist-private があれば、実パックをアプリ本体のコードで検証 (取り込み・採点・復元)
+```
+
+出力 (`dist-private/`): `CCDV-F|CCAO-F|CCAR-P|CCAR-F.pack.zip`、`ALL.pack.zip` (全資格・図表50枚込み)、`*.pack.json` (画像なし)、`conversion-report.json`、`IMPORT_REPORT.md` (隔離理由などの詳細)、`id-map.json` (問題ID・Excelの行・図表IDの対応表)。
+アプリの「設定 → 問題パックの取り込み」で読み込む。資格別と全資格を両方読み込んでも、同じ内容は重複しない。
+翻訳の進捗は `translations/checkpoint.json` に記録される。Excel の読み取りは、名前空間接頭辞付きの xlsx に対応する自前の最小リーダー (`scripts/lib/xlsx.mjs`、依存は fflate のみ)。
 
 ## 使い方
 
@@ -70,5 +87,6 @@ PWA: 初回読み込み後は静的アプリがキャッシュされ、取り込
 
 ## 未実装・今後の作業
 
-- 旧Excel→問題パックの変換CLI、英語原文236問の日本語化、図表50枚・補足講義10件の取り込み: **元教材が未添付のため未着手**。必要ファイルは [docs/FILE_CHECKLIST.md](docs/FILE_CHECKLIST.md)。
-- 翻訳チェックポイント(`translations/checkpoint.json`)の運用は変換CLIとあわせて実装予定。
+- 日本語化は完了したが、**翻訳の人手によるレビューと、解答の技術的検証は未実施**(別の作業)。英語236問の日本語訳は、全件を1人(AIエージェント)が訳したもので、第二の目での点検を受けていない。
+- Matthew版CCDV-F 5.9は、解答欄(A,D)と設問(1個選択)の不整合で隔離中。原文を確認して `revision` を上げたパックを作るまで、通常の出題には出ない。
+- 受験時点の公式Exam Guideとの照合、iPhone実機での確認、Service Worker の更新通知の実機確認は未実施。

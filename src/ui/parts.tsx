@@ -173,6 +173,13 @@ export function AnswerInput({ q, order, value, onChange, disabled }: InputProps)
 }
 
 // ---------- 解説 ----------
+const SUPPLEMENT_LABELS: Record<string, string> = {
+  wrongExplanation: '誤答の解説',
+  note: '補足',
+  runnerUp: '次点の選択肢と、誤りの理由',
+  sourceNote: '出典についての注記',
+};
+
 function labelOf(q: Question, id: string): string {
   return (
     q.choices?.find((c) => c.id === id)?.textJa ??
@@ -230,12 +237,12 @@ export function Explanation({ q, answer, onConfidence, children }: {
         </>
       )}
       <Assets q={q} placement="explanation" />
-      {q.supplemental && Object.keys(q.supplemental).length > 0 && (
-        <>
-          <h4>補足</h4>
-          {Object.entries(q.supplemental).map(([k, v]) => <div key={k}><Text>{typeof v === 'string' ? v : JSON.stringify(v)}</Text></div>)}
-        </>
-      )}
+      {q.supplemental && Object.entries(q.supplemental).filter(([, v]) => v !== '' && v != null).map(([k, v]) => (
+        <div key={k}>
+          <h4>{SUPPLEMENT_LABELS[k] ?? k}</h4>
+          <Text>{typeof v === 'string' ? v : JSON.stringify(v)}</Text>
+        </div>
+      ))}
       {q.reviewNotes && q.reviewNotes.length > 0 && <div className="warn"><h4>注記</h4><ul>{q.reviewNotes.map((n) => <li key={n}>{n}</li>)}</ul></div>}
       {showOriginal && q.originalText && <details open><summary>原文 (照合用)</summary><pre>{JSON.stringify(q.originalText, null, 2)}</pre></details>}
       <p className="meta">

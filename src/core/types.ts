@@ -10,7 +10,7 @@ export type QType = 'single' | 'multiple' | 'matching' | 'ordering';
 
 export interface Item { id: string; textJa: string }
 export interface Choice extends Item { explanationJa?: string; originalLabel?: string }
-export interface Asset { path: string; altJa: string; placement: 'stem' | 'explanation' }
+export interface Asset { path: string; altJa: string; placement: 'stem' | 'explanation'; sourceFigureId?: string; sourceCardId?: string }
 
 export interface Question {
   id: string;

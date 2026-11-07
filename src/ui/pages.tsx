@@ -5,7 +5,7 @@ import { EXAMS, EXAM_NAMES, type Exam, type Mode } from '../core/types';
 import { fmtJst } from '../core/util';
 import { describeError, go, useApp } from './ctx';
 import { ImportPanel } from './data';
-import { Text } from './parts';
+import { AssetImg, Text } from './parts';
 
 const pct = (n: number, d: number) => (d ? `${Math.round((n / d) * 100)}%` : '—');
 
@@ -61,7 +61,10 @@ export function Manage() {
     (status === 'all' || (status === 'pending' ? q.translationStatus === 'pending' : q.status === status)) &&
     (!text || (q.ja.stem + q.domainJa + q.id).toLowerCase().includes(text.toLowerCase())));
   const ready = questions.filter((q) => q.status === 'ready').length;
-  const lessons = packs.flatMap((p) => p.lessons);
+  // 資格別パックと全資格パックの両方を取り込んでも、同じ講義は1件として扱う
+  const lessonMap = new Map<string, { l: Record<string, unknown>; packId: string }>();
+  for (const p of packs) for (const l of p.lessons) { const k = String(l.id ?? ''); if (!lessonMap.has(k)) lessonMap.set(k, { l, packId: p.packId }); }
+  const lessons = [...lessonMap.values()];
   return (
     <div>
       <h2>問題管理</h2>
@@ -90,11 +93,15 @@ export function Manage() {
       {lessons.length > 0 && (
         <>
           <h3>補足講義 ({lessons.length}件)</h3>
-          {lessons.map((l, i) => (
+          {lessons.map(({ l, packId }, i) => (
             <details key={String(l.id ?? i)} className="qcard">
-              <summary>{String(l.titleJa ?? l.id)}</summary>
-              {typeof l.leadJa === 'string' && <Text>{l.leadJa}</Text>}
-              {Array.isArray(l.points) && <ul>{(l.points as unknown[]).map((p, k) => <li key={k}>{typeof p === 'string' ? p : JSON.stringify(p)}</li>)}</ul>}
+              <summary>{String(l.titleJa ?? l.id)}{typeof l.domainRaw === 'string' && l.domainRaw ? `　(${l.domainRaw})` : ''}</summary>
+              {typeof l.leadJa === 'string' && <><h4>導入</h4><Text>{l.leadJa}</Text></>}
+              {Array.isArray(l.points) && (l.points as unknown[]).map((p, k) => {
+                const o = (p && typeof p === 'object' ? p : { textJa: String(p) }) as { headingJa?: string; textJa?: string };
+                return <div key={k}>{o.headingJa && <h4>{o.headingJa}</h4>}<Text>{o.textJa ?? ''}</Text></div>;
+              })}
+              {Array.isArray(l.assets) && (l.assets as { path: string; altJa: string }[]).map((a) => <AssetImg key={a.path} packId={packId} asset={{ path: a.path, altJa: a.altJa, placement: 'explanation' }} />)}
             </details>
           ))}
         </>

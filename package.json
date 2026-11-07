@@ -12,7 +12,10 @@
     "verify:dist": "node scripts/verify-dist.mjs",
     "inventory": "node scripts/inventory.mjs",
     "smoke:pwa": "node scripts/pwa-smoke.mjs",
-    "serve:subpath": "node scripts/serve-subpath.mjs dist"
+    "serve:subpath": "node scripts/serve-subpath.mjs dist",
+    "extract:sources": "node scripts/extract-sources.mjs",
+    "check:translations": "node scripts/check-translations.mjs CCDV-F && node scripts/check-translations.mjs CCAO-F && node scripts/check-translations.mjs CCAR-P && node scripts/check-translations.mjs CCAR-F",
+    "build:packs": "node scripts/build-packs.mjs && node scripts/write-report.mjs"
   },
   "dependencies": {
     "fflate": "^0.8.3",
