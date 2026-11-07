@@ -1,0 +1,146 @@
+{
+  "checkedOn": "2026-11-07",
+  "questionBodiesIncluded": false,
+  "expectedTotal": 472,
+  "englishOriginals": 236,
+  "japaneseOriginals": 236,
+  "figuresExpected": 50,
+  "lessonsExpected": 10,
+  "countsMeaning": "既存Excel収録案内を再確認した記録。実データの全件再検査や翻訳済みの保証ではない。",
+  "exams": [
+    {
+      "exam": "CCDV-F",
+      "nameJa": "開発者・基礎",
+      "archiveFilename": "CCDV-F_Question_Archive.xlsx",
+      "expectedQuestions": 106,
+      "expectedBySource": {
+        "matthew": 53,
+        "minorun": 53
+      },
+      "figuresExpected": 20,
+      "lessonsExpected": 10,
+      "translationComplete": false
+    },
+    {
+      "exam": "CCAO-F",
+      "nameJa": "アソシエイト・基礎",
+      "archiveFilename": "CCAO-F_Question_Archive.xlsx",
+      "expectedQuestions": 120,
+      "expectedBySource": {
+        "matthew": 60,
+        "minorun": 60
+      },
+      "figuresExpected": 10,
+      "lessonsExpected": 0,
+      "translationComplete": false
+    },
+    {
+      "exam": "CCAR-P",
+      "nameJa": "アーキテクト・上級",
+      "archiveFilename": "CCAR-P_Question_Archive.xlsx",
+      "expectedQuestions": 126,
+      "expectedBySource": {
+        "matthew": 63,
+        "minorun": 63
+      },
+      "figuresExpected": 11,
+      "lessonsExpected": 0,
+      "translationComplete": false
+    },
+    {
+      "exam": "CCAR-F",
+      "nameJa": "アーキテクト・基礎",
+      "archiveFilename": "CCAR-F_Question_Archive.xlsx",
+      "expectedQuestions": 120,
+      "expectedBySource": {
+        "matthew": 60,
+        "minorun": 60
+      },
+      "figuresExpected": 9,
+      "lessonsExpected": 0,
+      "translationComplete": false
+    }
+  ],
+  "sources": [
+    {
+      "sourceId": "CCDV-F:matthew",
+      "exam": "CCDV-F",
+      "author": "Matthew Purcell",
+      "originalLanguage": "en",
+      "expectedQuestions": 53,
+      "url": "https://www.linkedin.com/posts/purcellmatthew_claude-certified-developer-foundations-practice-activity-7484728794990354432-iH0g",
+      "acquisition": "利用者が原本または既存保存Excelを提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    },
+    {
+      "sourceId": "CCDV-F:minorun",
+      "exam": "CCDV-F",
+      "author": "みのるん",
+      "originalLanguage": "ja",
+      "expectedQuestions": 53,
+      "url": "https://html.minoruonda.com/public/ccdvf-drill2-share-f2dd48f2/index.html",
+      "acquisition": "利用者が既存保存Excelまたは利用可能な原本を提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    },
+    {
+      "sourceId": "CCAO-F:matthew",
+      "exam": "CCAO-F",
+      "author": "Matthew Purcell",
+      "originalLanguage": "en",
+      "expectedQuestions": 60,
+      "url": "https://www.linkedin.com/posts/purcellmatthew_claude-certified-associate-foundations-practice-activity-7485091186098077697-12Gw",
+      "acquisition": "利用者が原本または既存保存Excelを提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    },
+    {
+      "sourceId": "CCAO-F:minorun",
+      "exam": "CCAO-F",
+      "author": "みのるん",
+      "originalLanguage": "ja",
+      "expectedQuestions": 60,
+      "url": "https://html.minoruonda.com/public/ccaof-drill-share-68a1174e/index.html",
+      "acquisition": "利用者が既存保存Excelまたは利用可能な原本を提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    },
+    {
+      "sourceId": "CCAR-P:matthew",
+      "exam": "CCAR-P",
+      "author": "Matthew Purcell",
+      "originalLanguage": "en",
+      "expectedQuestions": 63,
+      "url": "https://www.linkedin.com/feed/update/urn:li:activity:7482176978008342528",
+      "acquisition": "利用者が原本または既存保存Excelを提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    },
+    {
+      "sourceId": "CCAR-P:minorun",
+      "exam": "CCAR-P",
+      "author": "みのるん",
+      "originalLanguage": "ja",
+      "expectedQuestions": 63,
+      "url": "https://html.minoruonda.com/public/ccarp-drill-share-b5fdadfa/index.html",
+      "acquisition": "利用者が既存保存Excelまたは利用可能な原本を提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    },
+    {
+      "sourceId": "CCAR-F:matthew",
+      "exam": "CCAR-F",
+      "author": "Matthew Purcell",
+      "originalLanguage": "en",
+      "expectedQuestions": 60,
+      "url": "https://www.linkedin.com/posts/purcellmatthew_claude-certified-architect-foundations-practice-ugcPost-7483052497935429632-Ph3H/",
+      "acquisition": "利用者が原本または既存保存Excelを提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    },
+    {
+      "sourceId": "CCAR-F:minorun",
+      "exam": "CCAR-F",
+      "author": "みのるん",
+      "originalLanguage": "ja",
+      "expectedQuestions": 60,
+      "url": "https://html.minoruonda.com/public/ccarf-drill3-share-73d9970c/index.html",
+      "acquisition": "利用者が既存保存Excelまたは利用可能な原本を提供",
+      "redistributionPermission": "未確認。公開ビルドには含めない"
+    }
+  ]
+}

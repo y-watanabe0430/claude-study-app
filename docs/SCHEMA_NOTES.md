@@ -1,0 +1,4 @@
+# Schema補足
+JSON Schemaに加え、アプリで意味の検証をする：同一pack内question.idの一意性、各問のoption IDの一意性、正解IDの参照整合、requiredSelectionsと正解数、matchingの全小設問への回答・候補参照・再利用可否、orderingの項目集合一致、assetsパスの正規化・実在・容量、readyにpending翻訳がないこと。空の問題パックは取り込み画面で注意表示。原文の解説が存在しない問題を創作で埋めず、説明の未収録を明示してレビュー状態にする。
+原文以外の独自解説を追加する場合は、原文解説とは別フィールドに著者と検証状態を残す。
+Schemaは原教材の追加フィールドを保持できる。lessonsの実型は実装時にZod等で厳密化し、id、titleJa、leadJa、points、assets、source、reviewStatusを必須項目として定義する。

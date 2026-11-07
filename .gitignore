@@ -1,0 +1,13 @@
+inputs_private/**
+!inputs_private/README.md
+dist-private/
+translations/
+backups/
+*.backup.zip
+*.private.json
+.env*
+!.env.example
+node_modules/
+dist/
+test-results/
+playwright-report/

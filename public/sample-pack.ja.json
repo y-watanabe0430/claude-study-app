@@ -1,0 +1,196 @@
+{
+  "schemaVersion": "1.0",
+  "packId": "claude-handoff-original-ja",
+  "version": "1.0.0",
+  "titleJa": "引き継ぎセット動作確認用・オリジナル4問",
+  "language": "ja",
+  "createdAt": "2026-11-07T00:00:00Z",
+  "questions": [
+    {
+      "id": "CCDV-F:original:1",
+      "revision": 1,
+      "exam": "CCDV-F",
+      "type": "single",
+      "domainJa": "動作確認用・オリジナル",
+      "status": "ready",
+      "translationStatus": "original_ja",
+      "ja": {
+        "stem": "ブラウザで動く学習アプリから外部APIを利用したい。秘密のAPIキーを利用者へ配信しない設計として、最も適切なのはどれか。",
+        "explanation": "秘密を保持する必要がある処理は、利用者へ配るフロントエンドだけでは完結できない。このサンプルは設計原則の確認用であり、今回の学習アプリに外部APIを追加する指示ではない。"
+      },
+      "source": {
+        "sourceId": "handoff-original",
+        "originalId": "1",
+        "author": "今回の引き継ぎセット用に作成",
+        "license": "CC0-1.0"
+      },
+      "reviewNotes": [],
+      "assets": [],
+      "shuffleChoices": true,
+      "choices": [
+        {
+          "id": "server",
+          "textJa": "必要な場合は、秘密を保持できるサーバー側で外部APIを呼ぶ。",
+          "explanationJa": "ブラウザへ秘密を配布せずに処理できる。"
+        },
+        {
+          "id": "bundle",
+          "textJa": "APIキーをJavaScriptファイルへ直接書く。",
+          "explanationJa": "配信されたファイルからキーを読める。"
+        },
+        {
+          "id": "hide",
+          "textJa": "APIキーの変数名を分かりにくくする。",
+          "explanationJa": "変数名を変えても秘密の保護にはならない。"
+        }
+      ],
+      "requiredSelections": 1,
+      "correctAnswer": {
+        "choiceIds": [
+          "server"
+        ]
+      }
+    },
+    {
+      "id": "CCAO-F:original:2",
+      "revision": 1,
+      "exam": "CCAO-F",
+      "type": "multiple",
+      "domainJa": "動作確認用・オリジナル",
+      "status": "ready",
+      "translationStatus": "original_ja",
+      "ja": {
+        "stem": "AIが作成した社内説明資料を配布する前の確認として、適切なものを2つ選んでください。",
+        "explanation": "内容の根拠と配布範囲をそれぞれ確認する。流暢さは正確性の保証にならない。"
+      },
+      "source": {
+        "sourceId": "handoff-original",
+        "originalId": "2",
+        "author": "今回の引き継ぎセット用に作成",
+        "license": "CC0-1.0"
+      },
+      "reviewNotes": [],
+      "assets": [],
+      "shuffleChoices": true,
+      "choices": [
+        {
+          "id": "facts",
+          "textJa": "数値や引用元を原資料と照合する。",
+          "explanationJa": "誤りや根拠のない主張を確認できる。"
+        },
+        {
+          "id": "secret",
+          "textJa": "配布先に見せてよい情報だけか確認する。",
+          "explanationJa": "情報の扱いに関する人の判断が必要。"
+        },
+        {
+          "id": "fluent",
+          "textJa": "文章が自然なら内容の確認を省略する。",
+          "explanationJa": "自然さだけでは内容の正しさは分からない。"
+        }
+      ],
+      "requiredSelections": 2,
+      "correctAnswer": {
+        "choiceIds": [
+          "facts",
+          "secret"
+        ]
+      }
+    },
+    {
+      "id": "CCAR-F:original:3",
+      "revision": 1,
+      "exam": "CCAR-F",
+      "type": "matching",
+      "domainJa": "動作確認用・オリジナル",
+      "status": "ready",
+      "translationStatus": "original_ja",
+      "ja": {
+        "stem": "調査の目的と、その目的に合う操作を対応付けてください。",
+        "explanation": "まず必要な場所を検索で絞り込み、対象の内容は読み取りで確かめる。操作の名前ではなく目的に対応させるサンプル。"
+      },
+      "source": {
+        "sourceId": "handoff-original",
+        "originalId": "3",
+        "author": "今回の引き継ぎセット用に作成",
+        "license": "CC0-1.0"
+      },
+      "reviewNotes": [],
+      "assets": [],
+      "shuffleChoices": true,
+      "matching": {
+        "prompts": [
+          {
+            "id": "find",
+            "textJa": "関連する名前をコード全体から探したい。"
+          },
+          {
+            "id": "inspect",
+            "textJa": "見つけたファイルの内容を確認したい。"
+          }
+        ],
+        "candidates": [
+          {
+            "id": "search",
+            "textJa": "文字列を検索する。"
+          },
+          {
+            "id": "read",
+            "textJa": "対象ファイルを読み取る。"
+          }
+        ],
+        "allowReuse": false
+      },
+      "correctAnswer": {
+        "matches": {
+          "find": "search",
+          "inspect": "read"
+        }
+      }
+    },
+    {
+      "id": "CCAR-P:original:4",
+      "revision": 1,
+      "exam": "CCAR-P",
+      "type": "ordering",
+      "domainJa": "動作確認用・オリジナル",
+      "status": "ready",
+      "translationStatus": "original_ja",
+      "ja": {
+        "stem": "このサンプルプロジェクトでは、①要件と評価基準を決める、②その基準で試作を評価する、③合格した版を公開する、という手順を採用しています。項目をその順に並べてください。",
+        "explanation": "問題文で指定した手順に従う。実際の開発プロセスが常に単一の順序に固定されるという意味ではない。"
+      },
+      "source": {
+        "sourceId": "handoff-original",
+        "originalId": "4",
+        "author": "今回の引き継ぎセット用に作成",
+        "license": "CC0-1.0"
+      },
+      "reviewNotes": [],
+      "assets": [],
+      "shuffleChoices": false,
+      "items": [
+        {
+          "id": "release",
+          "textJa": "合格した版を公開する。"
+        },
+        {
+          "id": "requirements",
+          "textJa": "要件と評価基準を決める。"
+        },
+        {
+          "id": "evaluate",
+          "textJa": "評価基準で試作を評価する。"
+        }
+      ],
+      "correctAnswer": {
+        "order": [
+          "requirements",
+          "evaluate",
+          "release"
+        ]
+      }
+    }
+  ],
+  "lessons": []
+}
